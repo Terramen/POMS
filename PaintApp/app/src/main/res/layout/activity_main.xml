@@ -5,15 +5,64 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="579dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
 
-        <include layout="@layout/view_display" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <ImageButton
+            android:id="@+id/buttonNew"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/start_new"
+            android:src="@drawable/new_pic60" />
+
+        <ImageButton
+            android:id="@+id/buttonBrush"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/brush"
+            android:src="@drawable/brush60" />
+
+        <ImageButton
+            android:id="@+id/buttonErase"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/erase"
+            android:src="@drawable/eraser60" />
+
+        <ImageButton
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/save"
+        android:src="@drawable/save60" />
+
+        <ImageButton
+            android:id="@+id/buttonShape"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/shape"
+            android:src="@drawable/shapes30x30" />
+
     </LinearLayout>
+
+
+    <com.example.paintapp.Display
+        android:id="@+id/drawing"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="3dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        />
 
 
     <LinearLayout
@@ -34,9 +83,10 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:background="@drawable/button_design"
-            android:backgroundTint="#000000"
-            android:onClick="magentaColor"
+            android:backgroundTint="@color/black"
+            android:onClick="paintClicked"
             android:layout_weight="1"
+            android:tag = "@color/black"
             />
 
         <Button
@@ -45,9 +95,10 @@
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/button_design"
-            android:backgroundTint="#ffff00"
-            android:onClick="yellowColor"
+            android:backgroundTint="@color/yellow"
+            android:onClick="paintClicked"
             android:layout_weight="1"
+            android:tag="@color/yellow"
             />
 
         <Button
@@ -56,9 +107,10 @@
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/button_design"
-            android:backgroundTint="#00ff00"
-            android:onClick="greenColor"
+            android:backgroundTint="@color/green"
+            android:onClick="paintClicked"
             android:layout_weight="1"
+            android:tag = "@color/green"
             />
 
         <Button
@@ -67,42 +119,49 @@
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/button_design"
-            android:backgroundTint="#0000ff"
-            android:onClick="blueColor"
+            android:backgroundTint="@color/blue"
+            android:onClick="paintClicked"
             android:layout_weight="1"
+            android:tag = "@color/blue"
             />
+
             <Button
                 android:id="@+id/button5"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/button_design"
-                android:backgroundTint="#ff0000"
-                android:onClick="redColor"
+                android:backgroundTint="@color/red"
+                android:onClick="paintClicked"
                 android:layout_weight="1"
+                android:tag = "@color/red"
                 />
 
 
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/pencil"
-            android:onClick="pencil"
-            android:layout_weight="1"
-            />
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/button_design"
+                android:backgroundTint="@color/skin"
+                android:onClick="paintClicked"
+                android:layout_weight="1"
+                android:tag="@color/skin"
+                />
 
 
-        <Button
-            android:id="@+id/button7"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="12dp"
-            android:background="@drawable/eraser"
-            android:onClick="eraser"
-            android:layout_weight="1"
-            />
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/button_design"
+                android:backgroundTint="@color/magenta"
+                android:onClick="paintClicked"
+                android:layout_weight="1"
+                android:tag="@color/magenta"
+                />
 
 
         </LinearLayout>
