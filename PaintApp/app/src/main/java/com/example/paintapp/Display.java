@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -51,6 +52,15 @@ public class Display extends View {
     private Bitmap selectedBitmap;
     private float brushSize, lastBrushSize;
     private boolean erase = false;
+
+
+    private float x0;
+    private float y0;
+    private int status;
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public Display(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -96,7 +106,7 @@ public class Display extends View {
         drawCanvas = new Canvas(canvasBitmap);
     }
 
-    @Override
+/*    @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
@@ -124,6 +134,218 @@ public class Display extends View {
         }
         invalidate();
         return true;
+    }*/
+
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (status) {
+            case 0: drawCircle(event.getX(), event.getY(), event);
+                break;
+            case 1: drawTriangle(event.getX(), event.getY(), event);
+                break;
+            case 2: drawLine(event.getX(), event.getY(), event);
+                break;
+            case 3: drawRectangle(event.getX(), event.getY(), event);
+                break;
+            case 4: drawErase(event.getX(), event.getY(), event);
+                break;
+        }
+        invalidate();
+        return true;
+    }
+
+    public void drawRectangle(float touchX, float touchY, MotionEvent event) {
+        switch (event.getAction()) {
+
+            case MotionEvent.ACTION_DOWN:
+                x0 = touchX;
+                y0 = touchY;
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                drawPath.reset();
+                path.reset();
+
+                drawPath.addRect(new RectF(x0, y0, touchX, touchY), Path.Direction.CW);
+                drawPath.addRect(new RectF(x0, touchY, touchX, y0), Path.Direction.CW);
+
+                drawPath.addRect(new RectF(touchX, y0, x0, touchY), Path.Direction.CW);
+                drawPath.addRect(new RectF(touchX, touchY, x0, y0), Path.Direction.CW);
+
+                path.addRect(new RectF(x0, y0, touchX, touchY), Path.Direction.CW);
+                path.addRect(new RectF(x0, touchY, touchX, y0), Path.Direction.CW);
+
+                path.addRect(new RectF(touchX, y0, x0, touchY), Path.Direction.CW);
+                path.addRect(new RectF(touchX, touchY, x0, y0), Path.Direction.CW);
+
+                break;
+
+            case MotionEvent.ACTION_UP:
+                drawCanvas.drawPath(path, drawPaint);
+                imageCanvas.drawPath(drawPath, drawPaint);
+                drawPath.reset();
+                path.reset();
+                break;
+        }
+    }
+
+    public void drawCircle(float touchX, float touchY, MotionEvent event) {
+        switch (event.getAction()) {
+
+            case MotionEvent.ACTION_DOWN:
+                x0 = touchX;
+                y0 = touchY;
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+
+                drawPath.reset();
+                path.reset();
+
+                if (Math.abs(touchY - y0) > Math.abs(touchX - x0)) {
+                    if (y0 < touchY) {
+                        drawPath.addCircle(x0, y0, touchY - y0, Path.Direction.CW);
+                    } else {
+                        drawPath.addCircle(x0, y0, y0 - touchY, Path.Direction.CW);
+                    }
+                } else {
+                    if (x0 < touchX) {
+                        drawPath.addCircle(x0, y0, touchX - x0, Path.Direction.CW);
+                    } else {
+                        drawPath.addCircle(x0, y0, x0 - touchX, Path.Direction.CW);
+                    }
+                }
+
+                if (Math.abs(touchY - y0) > Math.abs(touchX - x0)) {
+                    if (y0 < touchY) {
+                        path.addCircle(x0, y0, touchY - y0, Path.Direction.CW);
+                    } else {
+                        path.addCircle(x0, y0, y0 - touchY, Path.Direction.CW);
+                    }
+                } else {
+                    if (x0 < touchX) {
+                        path.addCircle(x0, y0, touchX - x0, Path.Direction.CW);
+                    } else {
+                        path.addCircle(x0, y0, x0 - touchX, Path.Direction.CW);
+                    }
+                }
+
+                break;
+
+            case MotionEvent.ACTION_UP:
+                drawCanvas.drawPath(drawPath, drawPaint);
+                imageCanvas.drawPath(path, drawPaint);
+                drawPath.reset();
+                path.reset();
+                break;
+        }
+    }
+
+    public void drawTriangle(float touchX, float touchY, MotionEvent event) {
+        switch (event.getAction()) {
+
+            case MotionEvent.ACTION_DOWN:
+                x0 = touchX;
+                y0 = touchY;
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+
+                drawPath.reset();
+                path.reset();
+
+                if (x0 < touchX) {
+                    drawPath.moveTo(x0, y0);
+                    drawPath.lineTo(touchX, touchY);
+
+                    drawPath.moveTo(x0, y0);
+                    drawPath.lineTo((x0 - Math.abs(x0 - touchX)), touchY);
+
+                    drawPath.lineTo(touchX, touchY);
+                } else {
+
+                    drawPath.moveTo(x0, y0);
+                    drawPath.lineTo(touchX, touchY);
+
+                    drawPath.moveTo(x0, y0);
+                    drawPath.lineTo((x0 + Math.abs(x0 - touchX)), touchY);
+
+                    drawPath.lineTo(touchX, touchY);
+
+                }
+
+                if (x0 < touchX) {
+                    path.moveTo(x0, y0);
+                    path.lineTo(touchX, touchY);
+
+                    path.moveTo(x0, y0);
+                    path.lineTo((x0 - Math.abs(x0 - touchX)), touchY);
+
+                    path.lineTo(touchX, touchY);
+                } else {
+
+                    path.moveTo(x0, y0);
+                    path.lineTo(touchX, touchY);
+
+                    path.moveTo(x0, y0);
+                    path.lineTo((x0 + Math.abs(x0 - touchX)), touchY);
+
+                    path.lineTo(touchX, touchY);
+
+                }
+
+                break;
+
+            case MotionEvent.ACTION_UP:
+
+                drawCanvas.drawPath(drawPath, drawPaint);
+                imageCanvas.drawPath(path, drawPaint);
+                drawPath.reset();
+                path.reset();
+                break;
+        }
+    }
+
+    public void drawLine(float touchX, float touchY, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                drawPath.moveTo(touchX, touchY);
+                path.moveTo(touchX, touchY);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                drawPath.lineTo(touchX, touchY);
+                path.lineTo(touchX, touchY);
+                break;
+            case MotionEvent.ACTION_UP:
+                if (erase) {
+                    drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+                }
+                imageCanvas.drawPath(drawPath, drawPaint);
+                drawCanvas.drawPath(path, drawPaint);
+                drawPath.reset();
+                path.reset();
+                drawPaint.setXfermode(null);
+                break;
+        }
+    }
+
+    public void drawErase(float touchX, float touchY, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                drawPath.moveTo(touchX, touchY);
+                path.moveTo(touchX, touchY);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                drawPath.lineTo(touchX, touchY);
+                path.lineTo(touchX, touchY);
+                break;
+            case MotionEvent.ACTION_UP:
+                imageCanvas.drawPath(drawPath, drawPaint);
+                drawCanvas.drawPath(path, drawPaint);
+                drawPath.reset();
+                path.reset();
+                drawPaint.setXfermode(null);
+                break;
+        }
     }
 
     @Override
@@ -170,7 +392,6 @@ public class Display extends View {
         erase = isErase;
         if(erase) {
             drawPaint.setColor(Color.WHITE);
-            //drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         }
         else {
             drawPaint.setColor(previousColor);

@@ -29,7 +29,7 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Display display;
-    private ImageButton currPaint, drawButton, eraseButton, newButton, saveButton;
+    private ImageButton currPaint, drawButton, eraseButton, newButton, saveButton, shapeButton;
     private Button currPaint2;
     private float smallBrush, mediumBrush, largeBrush;
 
@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayout paintLayout = (LinearLayout)findViewById(R.id.linearLayoutButtons);
         // 0th child is white color, so selecting first child to give black as initial color.
         currPaint = (ImageButton)paintLayout.getChildAt(1);
-      // РАСКОММЕНТИТЬ КОГДА ПОЙМУ  currPaint.setImageDrawable(getResources().getDrawable(R.drawable.pallet_pressed));
         drawButton = (ImageButton) findViewById(R.id.buttonBrush);
         drawButton.setOnClickListener(this);
         eraseButton = (ImageButton) findViewById(R.id.buttonErase);
@@ -52,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         newButton.setOnClickListener(this);
         saveButton = (ImageButton) findViewById(R.id.buttonSave);
         saveButton.setOnClickListener(this);
+        shapeButton = (ImageButton) findViewById(R.id.buttonShape);
+        shapeButton.setOnClickListener(this);
 
         smallBrush = getResources().getInteger(R.integer.small_size);
         mediumBrush = getResources().getInteger(R.integer.medium_size);
@@ -93,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Show save painting confirmation dialog.
                 showSavePaintingConfirmationDialog();
                 break;
+            case R.id.buttonShape:
+                // Show shape choose dialog
+                showShapeChooserDialog();
+                break;
         }
     }
 
@@ -128,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 brushDialog.dismiss();
             }
         });
+        display.setStatus(2);
         display.setErase(false);
         brushDialog.show();
     }
@@ -163,28 +169,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 brushDialog.dismiss();
             }
         });
+        display.setStatus(4);
         brushDialog.show();
     }
 
-/*    private void showNewPaintingAlertDialog(){
-        AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
-        newDialog.setTitle("New drawing");
-        newDialog.setMessage("Start new drawing (you will lose the current drawing)?");
-        newDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                display.startNew();
-                dialog.dismiss();
+    private void showShapeChooserDialog() {
+        final Dialog shapeDialog = new Dialog(this);
+        shapeDialog.setTitle("Shape:");
+        shapeDialog.setContentView(R.layout.dialog_shape);
+        ImageButton buttonRectangle = (ImageButton) shapeDialog.findViewById(R.id.rectangle);
+        buttonRectangle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                display.setStatus(3);
+                shapeDialog.dismiss();
             }
         });
-        newDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+        ImageButton buttonCircle = (ImageButton) shapeDialog.findViewById(R.id.circle);
+        buttonCircle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                display.setStatus(0);
+                shapeDialog.dismiss();
             }
         });
-        newDialog.show();
-    }*/
-
-
+        ImageButton buttonTriangle = (ImageButton) shapeDialog.findViewById(R.id.triangle);
+        buttonTriangle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                display.setStatus(1);
+                shapeDialog.dismiss();
+            }
+        });
+        display.setErase(false);
+        shapeDialog.show();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -210,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
         newDialog.setTitle("Новое окно для рисования");
         newDialog.setMessage("Новый чистый лист или загрузить существующее из галереи?");
-        newDialog.setNeutralButton("Чистый лист", new DialogInterface.OnClickListener() {
+        newDialog.setNegativeButton("Чистый лист", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 display.startNew();
                 dialog.dismiss();
@@ -231,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.dismiss();
             }
         });
-        newDialog.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+        newDialog.setNeutralButton("Отмена", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
@@ -241,9 +260,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showSavePaintingConfirmationDialog(){
         AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
-        saveDialog.setTitle("Save drawing");
-        saveDialog.setMessage("Save drawing to device Gallery?");
-        saveDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+        saveDialog.setTitle("Сохранение картинки");
+        saveDialog.setMessage("Сохранить нарисованное в галерею?");
+        saveDialog.setPositiveButton("Да", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which){
                 //save drawing
                 display.setDrawingCacheEnabled(true);
@@ -252,19 +271,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         UUID.randomUUID().toString()+".png", "drawing");
                 if(imgSaved!=null){
                     Toast savedToast = Toast.makeText(getApplicationContext(),
-                            "Drawing saved to Gallery!", Toast.LENGTH_SHORT);
+                            "Картинка успешно сохранена в галерею!", Toast.LENGTH_SHORT);
                     savedToast.show();
                 }
                 else{
                     Toast unsavedToast = Toast.makeText(getApplicationContext(),
-                            "Oops! Image could not be saved.", Toast.LENGTH_SHORT);
+                            "Упс. Картинка не может быть сохранена", Toast.LENGTH_SHORT);
                     unsavedToast.show();
                 }
                 // Destroy the current cache.
                 display.destroyDrawingCache();
             }
         });
-        saveDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+        saveDialog.setNegativeButton("Отмена", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which){
                 dialog.cancel();
             }

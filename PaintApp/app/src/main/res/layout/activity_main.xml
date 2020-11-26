@@ -5,49 +5,46 @@
     android:orientation="vertical">
 
 
-
-
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/buttonNew"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:contentDescription="@string/start_new"
-            android:src="@drawable/new_pic60" />
+            android:src="@drawable/new_pixel" />
 
         <ImageButton
             android:id="@+id/buttonBrush"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:contentDescription="@string/brush"
-            android:src="@drawable/brush60" />
+            android:src="@drawable/pen_pixel" />
 
         <ImageButton
             android:id="@+id/buttonErase"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:contentDescription="@string/erase"
-            android:src="@drawable/eraser60" />
+            android:src="@drawable/erase_pixel" />
 
         <ImageButton
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:contentDescription="@string/save"
-        android:src="@drawable/save60" />
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/save"
+            android:src="@drawable/save_pixel" />
 
         <ImageButton
             android:id="@+id/buttonShape"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:contentDescription="@string/shape"
-            android:src="@drawable/shapes30x30" />
+            android:src="@drawable/pixel_shape" />
 
     </LinearLayout>
 
@@ -64,7 +61,6 @@
         android:background="@color/white"
         />
 
-
     <LinearLayout
         android:id="@+id/linearLayoutButtons"
         android:layout_width="match_parent"
@@ -78,52 +74,52 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             >
-        <Button
-            android:id="@+id/button"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/button_design"
-            android:backgroundTint="@color/black"
-            android:onClick="paintClicked"
-            android:layout_weight="1"
-            android:tag = "@color/black"
-            />
+            <Button
+                android:id="@+id/button"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/button_design"
+                android:backgroundTint="@color/black"
+                android:onClick="paintClicked"
+                android:layout_weight="1"
+                android:tag = "@color/black"
+                />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/button_design"
-            android:backgroundTint="@color/yellow"
-            android:onClick="paintClicked"
-            android:layout_weight="1"
-            android:tag="@color/yellow"
-            />
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/button_design"
+                android:backgroundTint="@color/yellow"
+                android:onClick="paintClicked"
+                android:layout_weight="1"
+                android:tag="@color/yellow"
+                />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/button_design"
-            android:backgroundTint="@color/green"
-            android:onClick="paintClicked"
-            android:layout_weight="1"
-            android:tag = "@color/green"
-            />
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/button_design"
+                android:backgroundTint="@color/green"
+                android:onClick="paintClicked"
+                android:layout_weight="1"
+                android:tag = "@color/green"
+                />
 
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/button_design"
-            android:backgroundTint="@color/blue"
-            android:onClick="paintClicked"
-            android:layout_weight="1"
-            android:tag = "@color/blue"
-            />
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/button_design"
+                android:backgroundTint="@color/blue"
+                android:onClick="paintClicked"
+                android:layout_weight="1"
+                android:tag = "@color/blue"
+                />
 
             <Button
                 android:id="@+id/button5"
