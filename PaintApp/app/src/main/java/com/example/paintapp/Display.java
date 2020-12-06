@@ -105,37 +105,7 @@ public class Display extends View {
         imageCanvas = new Canvas(imageBitmap);
         drawCanvas = new Canvas(canvasBitmap);
     }
-
-/*    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                drawPath.moveTo(x, y);
-                path.moveTo(x, y);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                drawPath.lineTo(x, y);
-                path.lineTo(x, y);
-                break;
-            case MotionEvent.ACTION_UP:
-                if (erase) {
-                    drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-                }
-                imageCanvas.drawPath(drawPath, drawPaint);
-                drawCanvas.drawPath(path, drawPaint);
-                drawPath.reset();
-                path.reset();
-                drawPaint.setXfermode(null);
-                break;
-             default:
-                 return false;
-        }
-        invalidate();
-        return true;
-    }*/
-
+    
     public boolean onTouchEvent(MotionEvent event) {
         switch (status) {
             case 0: drawCircle(event.getX(), event.getY(), event);
